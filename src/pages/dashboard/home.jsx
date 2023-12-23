@@ -8,17 +8,9 @@ import {
   Typography,
   Card,
   CardHeader,
-  CardBody,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  IconButton
+  CardBody
 } from "@material-tailwind/react";
 
-import {
-  EllipsisVerticalIcon
-} from "@heroicons/react/24/outline";
 import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
