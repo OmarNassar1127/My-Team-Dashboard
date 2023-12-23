@@ -25,27 +25,7 @@ export function Footer({ brandName, brandLink, routes }) {
             </a>
             . All rights reserved.
           </Typography>
-          <Typography
-            variant="body2"
-            color="blue-gray"
-            className="text-center"
-          >
-            Made with{" "}
-            <HeartIcon
-              strokeWidth={2}
-              className="h-5 w-5 text-red-500 inline-block"
-            />{" "}
-            by{" "}
-            <a
-              href="https://www.creative-tim.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-blue-gray-500 transition-colors duration-200"
-            >
-              My Team
-            </a>
-            .
-          </Typography>
+
         </div>
       </div>
     </footer>
