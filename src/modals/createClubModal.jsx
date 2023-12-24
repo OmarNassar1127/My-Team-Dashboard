@@ -2,18 +2,39 @@ import React, { useState } from "react";
 import {
   PlusIcon
 } from "@heroicons/react/24/solid";
+import { useStoreClub } from "@/api/useStoreClub";
 
 export default function CreateClubModal() {
   const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
+  const [clubData, setClubData] = useState({
+    name: '',
+    address: '',
+    contact_info: '',
+    email: '',
+    president_user_id: null, 
+  });
+  const [logo, setLogo] = useState(null);
+  const { storeClub, isLoading, error } = useStoreClub();
 
-  const handleSubmit = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setClubData({ ...clubData, [name]: value });
+  };
+
+  const handleLogoChange = (e) => {
+    setLogo(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, email, password, phone });
-    setShowModal(false);
+    console.log(clubData);
+    try {
+      const response = await storeClub(clubData, logo);
+      console.log(response);
+      setShowModal(false);
+    } catch (error) {
+      console.error('Failed to create the club:', error);
+    }
   };
 
   return (
@@ -49,13 +70,82 @@ export default function CreateClubModal() {
                   </button>
                 </div>
                 {/* body */}
-                <form onSubmit={handleSubmit} className="relative p-6 flex flex-col">
-                  <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="mb-4 p-2 border rounded" />
+                <form onSubmit={handleSubmit} className="relative p-6 flex-auto">
+                  {/* ... other inputs ... */}
+                  <div className="mb-4">
+                    <label htmlFor="name" className="mr-2 inline-block w-32 text-right">
+                      Name:
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
+                      Address:
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      name="address"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="contact_info" className="mr-2 inline-block w-32 text-right">
+                      Contact Info:
+                    </label>
+                    <input
+                      type="text"
+                      id="contact_info"
+                      name="contact_info"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
+                      Email:
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="president_user_id" className="mr-2 inline-block w-32 text-right">
+                      President User ID:
+                    </label>
+                    <input
+                      type="text"
+                      id="president_user_id"
+                      name="president_user_id"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="logo" className="mr-2 inline-block w-32 text-right">
+                      Logo:
+                    </label>
+                    <input
+                      type="file"
+                      id="logo"
+                      name="logo"
+                      onChange={handleLogoChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  {error && <p className="text-red-500">{error}</p>}
                 </form>
-                {/* footer */}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     className="bg-black text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
