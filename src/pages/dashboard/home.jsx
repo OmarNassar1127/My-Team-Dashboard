@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"; 
 import {
   UsersIcon,
   RocketLaunchIcon,
-  LifebuoyIcon
+  LifebuoyIcon,
 } from "@heroicons/react/24/solid";
 import {
   Typography,
@@ -12,6 +12,10 @@ import {
   CardBody,
   Button
 } from "@material-tailwind/react";
+import CreatePresidentModal from '../../modals/createPresidentModal';
+import CreateClubModal from '../../modals/createClubModal';
+import CreateTeamModal from "@/modals/createTeamModal";
+import CreateManagerModal from "@/modals/createManagerModal";
 import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
@@ -38,6 +42,7 @@ export function Home() {
       </div>
     );
   }
+
 
   const statisticsCardsData = statisticsData ? [
     {
@@ -106,6 +111,19 @@ export function Home() {
         />
       ))}
     </div>
+    <CardHeader
+      floated={false}
+      shadow={false}
+      color="transparent"
+      className="m-0 flex flex-wrap items-center justify-between p-6"
+    >
+      <div className="flex flex-wrap gap-2">
+            <CreatePresidentModal />
+            <CreateClubModal />
+            <CreateTeamModal />
+            <CreateManagerModal />
+      </div>
+    </CardHeader>
     <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-2">
         <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
           <CardHeader
