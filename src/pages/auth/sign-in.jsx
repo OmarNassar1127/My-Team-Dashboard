@@ -20,6 +20,7 @@ export function SignIn() {
     try {
       const token = await login(email, password);
       navigate('/dashboard/home'); 
+      window.location.reload();
     } catch (error) {
       console.error('Login error:', error);
     }

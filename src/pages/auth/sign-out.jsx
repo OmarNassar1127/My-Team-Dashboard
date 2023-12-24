@@ -17,6 +17,7 @@ export function SignOut() {
     const result = await logout();
     if (result) {
       navigate('/sign-in'); 
+      window.location.reload();
     }
   };
 
