@@ -11,7 +11,7 @@ export default function CreateClubModal() {
     address: '',
     contact_info: '',
     email: '',
-    president_user_id: null, 
+    president_user_id: null,
   });
   const [logo, setLogo] = useState(null);
   const { storeClub, isLoading, error } = useStoreClub();
