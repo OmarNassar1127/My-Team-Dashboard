@@ -3,6 +3,8 @@ import {
   PlusIcon
 } from "@heroicons/react/24/solid";
 import { useStoreClub } from "@/api/useStoreClub";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CreateClubModal() {
   const [showModal, setShowModal] = useState(false);
@@ -30,10 +32,11 @@ export default function CreateClubModal() {
     console.log(clubData);
     try {
       const response = await storeClub(clubData, logo);
-      console.log(response);
+      toast.success("Club created successfully");
       setShowModal(false);
     } catch (error) {
-      console.error('Failed to create the club:', error);
+      toast.error('Failed to create the club', error);
+      // console.error('Failed to create the club:', error);
     }
   };
 
@@ -47,6 +50,16 @@ export default function CreateClubModal() {
         <PlusIcon className="w-6 h-6 inline-block mr-2" />
         Create Club
       </button>
+      <ToastContainer position="top-right"
+        autoClose={1750}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       {showModal ? (
         <>
           <div

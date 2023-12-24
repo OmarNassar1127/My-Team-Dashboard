@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   UsersIcon,
@@ -21,6 +21,8 @@ import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
 import { useUsers } from '../../api/useUsers';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export function Home() {
@@ -30,6 +32,16 @@ export function Home() {
   const { data: statisticsData, loading: statisticsLoading, error: statisticsError } = useStatistics();
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
   const { data: usersData, loading: usersLoading, error: usersError } = useUsers();
+
+  useEffect(() => {
+    setTimeout(() => {
+      const signInSuccess = localStorage.getItem("signInSuccess");
+      if (signInSuccess) {
+        toast.success("Sign-in successful!");
+        localStorage.removeItem("signInSuccess");
+      }
+    }, 100);
+  }, []);
 
   if (statisticsLoading || clubsLoading || usersLoading) return <div>Loading...</div>;
   if ((statisticsError || clubsError || usersData) && (!statisticsData || !clubsData || !usersData)) {
@@ -98,6 +110,16 @@ export function Home() {
 
   return (
     <div className="mt-12">
+      <ToastContainer position="top-right"
+        autoClose={1750}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
         {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
           <StatisticsCard
