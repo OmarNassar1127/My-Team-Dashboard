@@ -7,13 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import { useAuth } from '../../api/useAuth';
 
-
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, isLoading, error } = useAuth();
   const navigate = useNavigate(); 
-
 
   const handleLogin = async (event) => {
     event.preventDefault();

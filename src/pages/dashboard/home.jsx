@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; 
 import {
   UsersIcon,
   RocketLaunchIcon,
@@ -8,21 +9,35 @@ import {
   Typography,
   Card,
   CardHeader,
-  CardBody
+  CardBody,
+  Button
 } from "@material-tailwind/react";
-
 import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
 
 
 export function Home() {
+  const navigate = useNavigate();
   const { data: statisticsData, loading: statisticsLoading, error: statisticsError } = useStatistics();
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
 
   if (statisticsLoading || clubsLoading) return <div>Loading...</div>;
-  if (statisticsError) return <div>Error: {statisticsError.message}</div>;
-  if (clubsError) return <div>Error: {clubsError.message}</div>;
+  if ((statisticsError || clubsError) && (!statisticsData || !clubsData)) {
+    return (
+      <div className="flex flex-col items-center justify-center mt-12">
+        <Typography variant="h5" className="mb-4">
+          {statisticsError?.message || clubsError?.message}
+        </Typography>
+        <Button
+          color="lightBlue"
+          onClick={() => navigate('/auth/sign-in')} 
+        >
+          Go to Login Page and Log In
+        </Button>
+      </div>
+    );
+  }
 
   const statisticsCardsData = statisticsData ? [
     {
