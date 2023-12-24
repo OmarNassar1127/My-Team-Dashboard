@@ -19,19 +19,21 @@ import CreateManagerModal from "@/modals/createManagerModal";
 import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
+import { useUsers } from '../../api/useUsers';
 
 
 export function Home() {
   const navigate = useNavigate();
   const { data: statisticsData, loading: statisticsLoading, error: statisticsError } = useStatistics();
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
+  const { data: usersData, loading: usersLoading, error: usersError } = useUsers();
 
-  if (statisticsLoading || clubsLoading) return <div>Loading...</div>;
-  if ((statisticsError || clubsError) && (!statisticsData || !clubsData)) {
+  if (statisticsLoading || clubsLoading || usersLoading) return <div>Loading...</div>;
+  if ((statisticsError || clubsError || usersData) && (!statisticsData || !clubsData || !usersData)) {
     return (
       <div className="flex flex-col items-center justify-center mt-12">
         <Typography variant="h5" className="mb-4">
-          {statisticsError?.message || clubsError?.message}
+          {statisticsError?.message || clubsError?.message || usersError?.message}
         </Typography>
         <Button
           color="lightBlue"
@@ -124,7 +126,7 @@ export function Home() {
             <CreateManagerModal />
       </div>
     </CardHeader>
-    <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-2">
+    <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
           <CardHeader
             floated={false}
@@ -187,6 +189,59 @@ export function Home() {
                     <td className={className}>
                       <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
                         {club.players}
+                      </Typography>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </CardBody>
+        </Card>
+        <Card className="overflow-hidden xl:col-span-1 border border-blue-gray-100 shadow-sm min-w-[320px]">
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="m-0 flex items-center justify-between p-6"
+          >
+            <div className="">
+              <Typography variant="h6" color="blue-gray" className="mb-0 font-bold">
+                Users
+              </Typography>
+            </div>
+          </CardHeader>
+          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+          <table className="w-full min-w-[150px] table-auto">
+            <thead>
+              <tr>
+                {["User", "Role",].map((el) => (
+                  <th key={el} className="border-b border-blue-gray-50 py-3 px-6 text-left">
+                    <Typography
+                      variant="small"
+                      className="text-[11px] font-medium uppercase text-blue-gray-400"
+                    >
+                      {el}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {usersData.data.map((user, key) => {
+                const className = `py-3 px-5 ${
+                  key === usersData.data.length - 1 ? "" : "border-b border-blue-gray-50"
+                }`;
+                return (
+                  <tr key={user.id}>
+                    <td className={className}>
+                      <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
+                        {user.name}
+                      </Typography>
+                    </td>
+                    <td className={className}>
+                      <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
+                        {user.role}
                       </Typography>
                     </td>
                   </tr>
