@@ -25,6 +25,8 @@ import { useUsers } from '../../api/useUsers';
 
 export function Home() {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryUsers, setSearchQueryUsers] = useState("");
   const { data: statisticsData, loading: statisticsLoading, error: statisticsError } = useStatistics();
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
   const { data: usersData, loading: usersLoading, error: usersError } = useUsers();
@@ -141,8 +143,12 @@ export function Home() {
               </Typography>
             </div>
             <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Search" />
-          </div>
+              <Input
+                label="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </CardHeader>
           <CardBody className="overflow-x-scroll overflow-y-auto px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
@@ -161,14 +167,18 @@ export function Home() {
               </tr>
             </thead>
             <tbody>
-              {clubsData.data.map((club, key) => {
-                const className = `py-3 px-5 ${
-                  key === clubsData.data.length - 1 ? "" : "border-b border-blue-gray-50"
-                }`;
+              {clubsData.data
+                .filter((club) =>
+                  club.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((club, key) => {
+                  const className = `py-3 px-5 ${
+                    key === clubsData.data.length - 1 ? "" : "border-b border-blue-gray-50"
+                  }`;
 
-                return (
-                  <tr key={club.id}>
-                    <td className={className}>
+                  return (
+                    <tr key={club.id}>
+                      <td className={className}>
                       <img 
                         src={club.logo_url} 
                         alt={club.name + " Logo"} 
@@ -195,9 +205,9 @@ export function Home() {
                         {club.players}
                       </Typography>
                     </td>
-                  </tr>
-                );
-              })}
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </CardBody>
@@ -215,8 +225,12 @@ export function Home() {
               </Typography>
             </div>
             <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Search" />
-          </div>
+              <Input
+                label="Search"
+                value={searchQueryUsers}
+                onChange={(e) => setSearchQueryUsers(e.target.value)}
+              />
+            </div>
           </CardHeader>
           <CardBody className="overflow-x-scroll overflow-y-auto px-0 pt-0 pb-2">
           <table className="w-full min-w-[150px] table-auto">
@@ -235,10 +249,14 @@ export function Home() {
               </tr>
             </thead>
             <tbody>
-              {usersData.data.map((user, key) => {
-                const className = `py-3 px-5 ${
-                  key === usersData.data.length - 1 ? "" : "border-b border-blue-gray-50"
-                }`;
+            {usersData.data
+                .filter((user) =>
+                  user.name.toLowerCase().includes(searchQueryUsers.toLowerCase())
+                )
+                .map((user, key) => {
+                  const className = `py-3 px-5 ${
+                    key === usersData.data.length - 1 ? "" : "border-b border-blue-gray-50"
+                  }`;
                 return (
                   <tr key={user.id}>
                     <td className={className}>
