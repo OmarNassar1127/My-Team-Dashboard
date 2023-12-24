@@ -3,26 +3,31 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import React, { useState } from 'react';
 import { useAuth } from '../../api/useAuth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, isLoading, error } = useAuth();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const token = await login(email, password);
-      navigate('/dashboard/home'); 
+      navigate('/dashboard/home');
       window.location.reload();
     } catch (error) {
-      console.error('Login error:', error);
+      // console.error('Login error:', error);
+      toast.error('Error signing in. Please try again.', error);
     }
   };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -30,6 +35,7 @@ export function SignIn() {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
   return (
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
@@ -38,33 +44,33 @@ export function SignIn() {
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
         </div>
         <form onSubmit={handleLogin} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
-      <div className="mb-1 flex flex-col gap-6">
-        <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-          Your email
-        </Typography>
-        <Input
-          size="lg"
-          placeholder="name@mail.com"
-          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          onChange={handleEmailChange} 
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-        />
-        <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-          Password
-        </Typography>
-        <Input
-          type="password"
-          size="lg"
-          placeholder="********"
-          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          onChange={handlePasswordChange} 
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-        />
-      </div>
+          <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Your email
+            </Typography>
+            <Input
+              size="lg"
+              placeholder="name@mail.com"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              onChange={handleEmailChange}
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Password
+            </Typography>
+            <Input
+              type="password"
+              size="lg"
+              placeholder="********"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              onChange={handlePasswordChange}
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+          </div>
 
           <Button type="submit" className="mt-6" fullWidth disabled={isLoading}>
             Sign In
@@ -83,6 +89,7 @@ export function SignIn() {
           </Typography>
         </form>
         {error && <p>Error: {error}</p>}
+        
       </div>
       <div className="w-2/5 h-full hidden lg:block">
         <img

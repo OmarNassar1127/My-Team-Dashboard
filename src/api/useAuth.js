@@ -24,6 +24,7 @@ export const useAuth = () => {
       const data = await response.json();
       setIsLoading(false);
       localStorage.setItem('authToken', data.token);
+      localStorage.setItem('signInSuccess', 'success');
       return data.token;
     } catch (error) {
       setIsLoading(false);
