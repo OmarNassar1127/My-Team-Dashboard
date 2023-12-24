@@ -10,7 +10,8 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Button
+  Button,
+  Input,
 } from "@material-tailwind/react";
 import CreatePresidentModal from '../../modals/createPresidentModal';
 import CreateClubModal from '../../modals/createClubModal';
@@ -139,8 +140,11 @@ export function Home() {
                 Clubs
               </Typography>
             </div>
+            <div className="mr-auto md:mr-4 md:w-56">
+            <Input label="Search" />
+          </div>
           </CardHeader>
-          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+          <CardBody className="overflow-x-scroll overflow-y-auto px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
@@ -210,8 +214,11 @@ export function Home() {
                 Users
               </Typography>
             </div>
+            <div className="mr-auto md:mr-4 md:w-56">
+            <Input label="Search" />
+          </div>
           </CardHeader>
-          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+          <CardBody className="overflow-x-scroll overflow-y-auto px-0 pt-0 pb-2">
           <table className="w-full min-w-[150px] table-auto">
             <thead>
               <tr>
