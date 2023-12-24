@@ -2,7 +2,6 @@ import {
   HomeIcon,
   UserCircleIcon,
   TableCellsIcon,
-  ServerStackIcon,
   RectangleStackIcon,
   UserMinusIcon,
 } from "@heroicons/react/24/solid";
@@ -53,7 +52,7 @@ export const routes = [
         },
       ] : 
       [        {
-          icon: <ServerStackIcon {...icon} />,
+          icon: <UserCircleIcon {...icon} />,
           name: "sign in",
           path: "/sign-in",
           element: <SignIn />,
