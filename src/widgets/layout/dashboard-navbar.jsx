@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
+  UserMinusIcon,
   Cog6ToothIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
@@ -23,6 +24,11 @@ export function DashboardNavbar() {
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('authToken');
+    return !!token; 
+  };
 
   return (
     <Navbar
@@ -75,23 +81,45 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
-            <Button
-              variant="text"
-              color="blue-gray"
-              className="hidden items-center gap-1 px-4 xl:flex normal-case"
-            >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
-            </Button>
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              className="grid xl:hidden"
-            >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-            </IconButton>
-          </Link>
+          {isAuthenticated() ? 
+            <Link to="/auth/sign-out">
+              <Button
+                variant="text"
+                color="blue-gray"
+                className="hidden items-center gap-1 px-4 xl:flex normal-case"
+                >
+                  <UserMinusIcon className="h-5 w-5 text-blue-gray-500" />
+                  Sign Out
+                </Button>
+                <IconButton
+                  variant="text"
+                  color="blue-gray"
+                  className="grid xl:hidden"
+                >
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              </IconButton>
+            </Link>
+            : 
+            <Link to="/auth/sign-in">
+              <Button
+                variant="text"
+                color="blue-gray"
+                className="hidden items-center gap-1 px-4 xl:flex normal-case"
+                >
+                  <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+                  Sign In
+                </Button>
+                <IconButton
+                  variant="text"
+                  color="blue-gray"
+                  className="grid xl:hidden"
+                >
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              </IconButton>
+            </Link>
+        }
+          
+          
           <IconButton
             variant="text"
             color="blue-gray"

@@ -4,6 +4,7 @@ import {
   TableCellsIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  UserMinusIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables } from "@/pages/dashboard";
 import { SignIn, SignUp, SignOut } from "@/pages/auth";
@@ -45,7 +46,7 @@ export const routes = [
     pages: isAuthenticated() ? 
       [
         {
-          icon: <ServerStackIcon {...icon} />,
+          icon: <UserMinusIcon {...icon} />,
           name: "sign out",
           path: "/sign-out",
           element: <SignOut />,

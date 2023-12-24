@@ -6,23 +6,35 @@ export function useStatistics() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/dashboard/statistics')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Error: ' + response.status);
-        }
-      })
-      .then(data => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
-      });
-  }, []);
+    const bearerToken = localStorage.getItem('authToken'); 
+
+    if (bearerToken) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${bearerToken}`,
+      };
+
+      fetch('http://127.0.0.1:8000/dashboard/statistics', { headers })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error: ' + response.status);
+          }
+        })
+        .then(data => {
+          setData(data);
+          setLoading(false);
+        })
+        .catch(error => {
+          setError(error);
+          setLoading(false);
+        });
+    } else {
+      setError('No auth token found');
+      setLoading(false);
+    }
+  }, []); 
 
   return { data, loading, error };
 }
