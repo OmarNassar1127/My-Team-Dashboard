@@ -2,17 +2,36 @@ import React, { useState } from "react";
 import {
   PlusIcon
 } from "@heroicons/react/24/solid";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useStorePresident } from '../api/useStorePresident'
+
 export default function CreatePresidentModal() {
   const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
+  const { storePresident, error } = useStorePresident();
+  const [presidentData, setpresidentData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    address: '',
+    phone_number: '',
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setpresidentData({ ...presidentData, [name]: value });
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ name, email, password, phone });
-    setShowModal(false);
+    const { name, email, password, address, phone_number } = presidentData;
+    try {
+      await storePresident({ name, email, password, address, phone_number });
+      setShowModal(false);
+      toast.success("President created successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error creating president. Please try again.");
+    }
   };
 
   return (
@@ -25,6 +44,16 @@ export default function CreatePresidentModal() {
         <PlusIcon className="w-6 h-6 inline-block mr-2" />
         Create President
       </button>
+      <ToastContainer position="top-right"
+        autoClose={1750}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       {showModal ? (
         <>
           <div
@@ -48,11 +77,69 @@ export default function CreatePresidentModal() {
                   </button>
                 </div>
                 {/* body */}
-                <form onSubmit={handleSubmit} className="relative p-6 flex flex-col">
-                  <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="mb-4 p-2 border rounded" />
-                  <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="mb-4 p-2 border rounded" />
+                <form onSubmit={handleSubmit} className="relative p-6 flex-auto">
+                  {/* ... other inputs ... */}
+                  <div className="mb-4">
+                    <label htmlFor="name" className="mr-2 inline-block w-32 text-right">
+                      Name:
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
+                      Email:
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="contact_info" className="mr-2 inline-block w-32 text-right">
+                      Password:
+                    </label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
+                      Address:
+                    </label>
+                    <input
+                      type="address"
+                      id="address"
+                      name="address"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
+                      Phone:
+                    </label>
+                    <input
+                      type="text"
+                      id="phone_number"
+                      name="phone_number"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  {error && <p className="text-red-500">{error}</p>}
                 </form>
                 {/* footer */}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
