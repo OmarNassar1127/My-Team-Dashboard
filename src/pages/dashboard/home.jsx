@@ -21,6 +21,7 @@ import { StatisticsCard } from "@/widgets/cards";
 import { useStatistics } from '../../api/useStatistics';
 import { useClubs } from '../../api/useClubs';
 import { useUsers } from '../../api/useUsers';
+import { useTeams } from '../../api/useTeams';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,9 +30,11 @@ export function Home() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryUsers, setSearchQueryUsers] = useState("");
+  const [searchQueryTeams, setSearchQueryTeams] = useState("");
   const { data: statisticsData, loading: statisticsLoading, error: statisticsError } = useStatistics();
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
   const { data: usersData, loading: usersLoading, error: usersError } = useUsers();
+  const { data: teamsData, loading: teamsLoading, error: teamsError } = useTeams();
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,12 +46,12 @@ export function Home() {
     }, 100);
   }, []);
 
-  if (statisticsLoading || clubsLoading || usersLoading) return <div>Loading...</div>;
-  if ((statisticsError || clubsError || usersData) && (!statisticsData || !clubsData || !usersData)) {
+  if (statisticsLoading || clubsLoading || usersLoading || teamsLoading) return <div>Loading...</div>;
+  if ((statisticsError || clubsError || usersData || teamsData) && (!statisticsData || !clubsData || !usersData || !teamsData)) {
     return (
       <div className="flex flex-col items-center justify-center mt-12">
         <Typography variant="h5" className="mb-4">
-          {statisticsError?.message || clubsError?.message || usersError?.message}
+          {statisticsError?.message || clubsError?.message || usersError?.message || teamsError?.message}
         </Typography>
         <Button
           color="lightBlue"
@@ -272,7 +275,8 @@ export function Home() {
               <tbody>
                 {usersData.data
                   .filter((user) =>
-                    user.name.toLowerCase().includes(searchQueryUsers.toLowerCase())
+                    user.name.toLowerCase().includes(searchQueryUsers.toLowerCase()) ||
+                    user.role.toLowerCase().includes(searchQueryUsers.toLowerCase())
                   )
                   .map((user, key) => {
                     const className = `py-3 px-5 ${key === usersData.data.length - 1 ? "" : "border-b border-blue-gray-50"
@@ -287,6 +291,81 @@ export function Home() {
                         <td className={className}>
                           <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
                             {user.role}
+                          </Typography>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+        <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="m-0 flex items-center justify-between p-6"
+          >
+            <div className="">
+              <Typography variant="h6" color="blue-gray" className="mb-0 font-bold">
+                Teams
+              </Typography>
+            </div>
+            <div className="mr-auto md:mr-4 md:w-56">
+              <Input
+                label="Search"
+                value={searchQueryTeams}
+                onChange={(e) => setSearchQueryTeams(e.target.value)}
+              />
+            </div>
+          </CardHeader>
+          <CardBody className="overflow-x-scroll overflow-y-auto px-0 pt-0 pb-2">
+            <table className="w-full min-w-[640px] table-auto">
+              <thead>
+                <tr>
+                  {["Team", "Club", "Managers", "Players"].map((el) => (
+                    <th key={el} className="border-b border-blue-gray-50 py-3 px-6 text-left">
+                      <Typography
+                        variant="small"
+                        className="text-[11px] font-medium uppercase text-blue-gray-400"
+                      >
+                        {el}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {teamsData.data
+                  .filter((team) =>
+                    team.name.toLowerCase().includes(searchQueryTeams.toLowerCase()) ||
+                    team.club.toLowerCase().includes(searchQueryTeams.toLowerCase())
+                  )
+                  .map((team, key) => {
+                    const className = `py-3 px-5 ${key === teamsData.data.length - 1 ? "" : "border-b border-blue-gray-50"
+                      }`;
+
+                    return (
+                      <tr key={team.id}>
+                        <td className={className}>
+                          <Typography variant="small" color="blue-gray" className="font-bold">
+                            {team.name}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
+                            {team.club}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
+                            {team.managers}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" className="text-xs font-medium text-blue-gray-600">
+                            {team.players}
                           </Typography>
                         </td>
                       </tr>
