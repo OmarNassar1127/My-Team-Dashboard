@@ -10,7 +10,7 @@ export function Footer({ brandName, brandLink, routes }) {
       <div className="container px-4 mx-auto">
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Typography
-            variant="body2"
+            variant="paragraph"
             color="blue-gray"
             className="text-center"
           >
