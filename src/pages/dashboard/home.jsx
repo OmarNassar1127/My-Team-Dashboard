@@ -59,6 +59,7 @@ export function Home() {
       color: "gray",
       icon: RocketLaunchIcon,
       title: "Total Clubs",
+      subtitle: ".",
       value: statisticsData.total_clubs,
       footer: {
         color: statisticsData.club_percentage_change >= 0 ? "text-green-500" : "text-red-500",
@@ -70,6 +71,7 @@ export function Home() {
       color: "gray",
       icon: UsersIcon,
       title: "Total Presidents",
+      subtitle: ".",
       value: statisticsData.total_presidents,
       footer: {
         color: statisticsData.president_percentage_change >= 0 ? "text-green-500" : "text-red-500",
