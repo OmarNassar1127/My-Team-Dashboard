@@ -4,8 +4,9 @@ import {
   TableCellsIcon,
   RectangleStackIcon,
   UserMinusIcon,
+  BugAntIcon
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables } from "@/pages/dashboard";
+import { Home, Profile, Tables, Clubs } from "@/pages/dashboard";
 import { SignIn, SignUp, SignOut } from "@/pages/auth";
 
 const icon = {
@@ -24,6 +25,12 @@ export const routes = [
         name: "dashboard",
         path: "/home",
         element: <Home />,
+      },
+      {
+        icon: <BugAntIcon {...icon} />,
+        name: "clubs",
+        path: "/clubs",
+        element: <Clubs />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
