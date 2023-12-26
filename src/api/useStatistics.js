@@ -15,7 +15,7 @@ export function useStatistics() {
       };
 
       const fetchData = () => {
-        fetch('http://127.0.0.1:8000/dashboard/statistics', { headers })
+        fetch('http://127.0.0.1:8000/dashboard/dashboard-statistics', { headers })
           .then(response => {
             if (response.ok) {
               return response.json();

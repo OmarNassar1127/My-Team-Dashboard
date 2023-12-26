@@ -15,7 +15,7 @@ export function useClubs() {
       };
 
       const fetchData = () => {
-        fetch('http://127.0.0.1:8000/dashboard/clubs', { headers })
+        fetch('http://127.0.0.1:8000/dashboard/clubs-table', { headers })
           .then((response) => {
             if (response.ok) {
               return response.json();

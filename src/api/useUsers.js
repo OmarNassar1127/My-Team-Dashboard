@@ -15,7 +15,7 @@ export function useUsers() {
       };
 
       const fetchData = () => {
-        fetch('http://127.0.0.1:8000/dashboard/users', { headers })
+        fetch('http://127.0.0.1:8000/dashboard/users-table', { headers })
           .then(response => {
             if (response.ok) {
               return response.json();
