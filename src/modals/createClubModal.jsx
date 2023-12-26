@@ -154,7 +154,7 @@ export default function CreateClubModal() {
                   </div>
                   <div className="mb-4">
                     <label htmlFor="president_user_id" className="mr-2 inline-block w-32 text-right">
-                      President User ID:
+                      Select President:
                     </label>
                     <select
                       id="president_user_id"
