@@ -43,9 +43,22 @@ export default function CreateClubModal() {
   return (
     <>
       <button
-        className="bg-white text-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-white text-black font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-blue-500 hover:text-white outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 border border-blue-gray-100"
         type="button"
         onClick={() => setShowModal(true)}
+        style={{
+          transition: 'background-color 0.3s, color 0.3s',
+          backgroundColor: '#fff',
+          color: '#000',
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = '#000';
+          e.target.style.color = '#fff';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = '#fff';
+          e.target.style.color = '#000';
+        }}
       >
         <PlusIcon className="w-6 h-6 inline-block mr-2" />
         Create Club
