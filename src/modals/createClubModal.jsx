@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function CreateClubModal() {
   const [showModal, setShowModal] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const [clubData, setClubData] = useState({
     name: '',
     address: '',
@@ -34,6 +35,14 @@ export default function CreateClubModal() {
     const { value } = e.target;
     setClubData({ ...clubData, president_user_id: value });
   };
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const filteredPresidents = presidentsLoading ? [] : presidents.filter((president) =>
+    president.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,9 +94,7 @@ export default function CreateClubModal() {
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             <div className="relative w-auto my-6 mx-auto max-w-md" style={{ width: '600px' }}>
-              {/* content */}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/* header */}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl font-semibold">
                     Create Club
@@ -101,9 +108,7 @@ export default function CreateClubModal() {
                     </span>
                   </button>
                 </div>
-                {/* body */}
                 <form onSubmit={handleSubmit} className="relative p-6 flex-auto">
-                  {/* ... other inputs ... */}
                   <div className="mb-4">
                     <label htmlFor="name" className="mr-2 inline-block w-32 text-right">
                       Name:
@@ -153,27 +158,24 @@ export default function CreateClubModal() {
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="president_user_id" className="mr-2 inline-block w-32 text-right">
+                    <label htmlFor="club_id" className="mr-2 inline-block w-32 text-right">
                       Select President:
                     </label>
-                    <select
-                      id="president_user_id"
-                      name="president_user_id"
-                      onChange={handlePresidentChange}
+                    <input
+                      type="search"
+                      id="president_search"
+                      name="president_search"
+                      list="president_datalist"
+                      value={searchValue}
+                      onChange={handleSearchChange}
+                      placeholder="Search club..."
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      {presidentsLoading ? (
-                        <option>Loading...</option>
-                      ) : presidentsError ? (
-                        <option>Error loading presidents</option>
-                      ) : (
-                        presidents.map((president) => (
-                          <option key={president.id} value={president.id}>
-                            {president.name}
-                          </option>
-                        ))
-                      )}
-                    </select>
+                    />
+                    <datalist id="president_datalist">
+                      {filteredPresidents.map((president) => (
+                        <option key={president.id} value={president.name} />
+                      ))}
+                    </datalist>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="logo" className="mr-2 inline-block w-32 text-right">

@@ -34,7 +34,7 @@ export function ClubsTable() {
 
   const indexOfLastClub = currentPage * clubsPerPage;
   const indexOfFirstClub = indexOfLastClub - clubsPerPage;
-  const filteredClubs = clubsData.data.filter((club) =>
+  const filteredClubs = clubsData.filter((club) =>
     club.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const currentClubs = filteredClubs.slice(indexOfFirstClub, indexOfLastClub);

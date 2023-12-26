@@ -37,7 +37,7 @@ export function SignIn() {
   };
 
   return (
-    <section className="m-8 flex gap-4">
+    <section className="m-8 flex gap-4 justify-center">
       <div className="w-full lg:w-3/5 mt-24">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
@@ -89,13 +89,19 @@ export function SignIn() {
           </Typography>
         </form>
         {error && <p>Error: {error}</p>}
-        
+
       </div>
-      <div className="w-2/5 h-full hidden lg:block">
-        <img
-          src="/img/pattern.png"
-          className="h-full w-full object-cover rounded-3xl"
-        />
+      <div className="w-1/2 lg:w-1/4 h-full hidden lg:block">
+        <div className="relative">
+          <img
+            src="/img/pattern.png"
+            className="h-full w-full object-cover rounded-3xl"
+          />
+          <img
+            src="/public/img/myTeamLogo.png"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-1/2  object-cover rounded-1xl"
+          />
+        </div>
       </div>
     </section>
   );

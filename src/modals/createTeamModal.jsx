@@ -7,6 +7,7 @@ import { useGetClubs } from "@/api/useGetClubs";
 import { toast, ToastContainer } from 'react-toastify';
 
 export default function CreateTeamModal() {
+  const [searchValue, setSearchValue] = useState('');
   const [showModal, setShowModal] = useState(false);
   const { storeTeam, isLoading, error } = useStoreTeam();
   const { clubs, loading: clubsLoading, error: clubsError } = useGetClubs(true);
@@ -22,11 +23,6 @@ export default function CreateTeamModal() {
     setTeamData({ ...teamData, [name]: value });
   };
 
-  const handleClubChange = (e) => {
-    const { value } = e.target;
-    setTeamData({ ...teamData, club_id: value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { club_id, name, category } = teamData;
@@ -39,6 +35,14 @@ export default function CreateTeamModal() {
       toast.error("Error creating team. Please try again.");
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const filteredClubs = clubsLoading ? [] : clubs.filter((club) =>
+    club.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   return (
     <>
@@ -98,24 +102,21 @@ export default function CreateTeamModal() {
                     <label htmlFor="club_id" className="mr-2 inline-block w-32 text-right">
                       Select Club:
                     </label>
-                    <select
-                      id="club_id"
-                      name="club_id"
-                      onChange={handleClubChange}
+                    <input
+                      type="search"
+                      id="club_search"
+                      name="club_search"
+                      list="clubs_datalist"
+                      value={searchValue}
+                      onChange={handleSearchChange}
+                      placeholder="Search club..."
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      {clubsLoading ? (
-                        <option>Loading...</option>
-                      ) : clubsError ? (
-                        <option>Error loading clubs</option>
-                      ) : (
-                        clubs.map((clubs) => (
-                          <option key={clubs.id} value={clubs.id}>
-                            {clubs.name}
-                          </option>
-                        ))
-                      )}
-                    </select>
+                    />
+                    <datalist id="clubs_datalist">
+                      {filteredClubs.map((club) => (
+                        <option key={club.id} value={club.name} />
+                      ))}
+                    </datalist>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
