@@ -28,7 +28,7 @@ export function Sidenav({ brandName, routes }) {
       >
         <Link to="/" className="py-6 px-8 text-center flex items-center">
           <Avatar
-            src="/public/img/myTeamLogo.png"
+            src="/img/myTeamLogo.png"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
             size="lg"
             className="mr-2"
