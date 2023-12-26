@@ -3,6 +3,7 @@ import {
   PlusIcon
 } from "@heroicons/react/24/solid";
 import { useStoreClub } from "@/api/useStoreClub";
+import { usePresidents } from "@/api/usePresidents";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,6 +18,8 @@ export default function CreateClubModal() {
   });
   const [logo, setLogo] = useState(null);
   const { storeClub, isLoading, error } = useStoreClub();
+  const { presidents, loading: presidentsLoading, error: presidentsError } = usePresidents(true);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,16 +30,19 @@ export default function CreateClubModal() {
     setLogo(e.target.files[0]);
   };
 
+  const handlePresidentChange = (e) => {
+    const { value } = e.target;
+    setClubData({ ...clubData, president_user_id: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(clubData);
     try {
       const response = await storeClub(clubData, logo);
       toast.success("Club created successfully");
       setShowModal(false);
     } catch (error) {
       toast.error('Failed to create the club', error);
-      // console.error('Failed to create the club:', error);
     }
   };
 
@@ -150,13 +156,24 @@ export default function CreateClubModal() {
                     <label htmlFor="president_user_id" className="mr-2 inline-block w-32 text-right">
                       President User ID:
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="president_user_id"
                       name="president_user_id"
-                      onChange={handleInputChange}
+                      onChange={handlePresidentChange}
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    >
+                      {presidentsLoading ? (
+                        <option>Loading...</option>
+                      ) : presidentsError ? (
+                        <option>Error loading presidents</option>
+                      ) : (
+                        presidents.map((president) => (
+                          <option key={president.id} value={president.id}>
+                            {president.name}
+                          </option>
+                        ))
+                      )}
+                    </select>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="logo" className="mr-2 inline-block w-32 text-right">
