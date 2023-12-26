@@ -10,7 +10,6 @@ export function Clubs() {
   const [searchQuery, setSearchQuery] = useState("");
   const { data: clubsData, loading: clubsLoading, error: clubsError } = useClubs();
 
-  // Filter clubs based on search query
   const filteredClubs = clubsData?.filter((club) =>
     club.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
