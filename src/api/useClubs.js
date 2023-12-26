@@ -23,8 +23,8 @@ export function useClubs() {
               throw new Error('Error: ' + response.status);
             }
           })
-          .then((data) => {
-            setData(data);
+          .then((responseData) => {
+            setData(responseData.data); // Extracting the data array from the response
             setLoading(false);
           })
           .catch((error) => {
