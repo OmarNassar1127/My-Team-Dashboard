@@ -3,19 +3,28 @@ import {
   PlusIcon
 } from "@heroicons/react/24/solid";
 import { useStoreTeam } from '../api/useStoreTeam';
+import { useGetClubs } from "@/api/useGetClubs";
 import { toast, ToastContainer } from 'react-toastify';
 
 export default function CreateTeamModal() {
   const [showModal, setShowModal] = useState(false);
   const { storeTeam, isLoading, error } = useStoreTeam();
+  const { clubs, loading: clubsLoading, error: clubsError } = useGetClubs(true);
+
   const [teamData, setTeamData] = useState({
     club_id: '',
     name: '',
     category: '',
   });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTeamData({ ...teamData, [name]: value });
+  };
+
+  const handleClubChange = (e) => {
+    const { value } = e.target;
+    setTeamData({ ...teamData, club_id: value });
   };
 
   const handleSubmit = async (e) => {
@@ -86,17 +95,27 @@ export default function CreateTeamModal() {
                 </div>
                 <form onSubmit={handleSubmit} className="relative p-6 flex-auto">
                   <div className="mb-4">
-                    <label htmlFor="name" className="mr-2 inline-block w-32 text-right">
-                      Club ID:
+                    <label htmlFor="club_id" className="mr-2 inline-block w-32 text-right">
+                      Select Club:
                     </label>
-                    <input
-                      type="number"
+                    <select
                       id="club_id"
                       name="club_id"
-                      required
-                      onChange={handleInputChange}
+                      onChange={handleClubChange}
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    >
+                      {clubsLoading ? (
+                        <option>Loading...</option>
+                      ) : clubsError ? (
+                        <option>Error loading clubs</option>
+                      ) : (
+                        clubs.map((clubs) => (
+                          <option key={clubs.id} value={clubs.id}>
+                            {clubs.name}
+                          </option>
+                        ))
+                      )}
+                    </select>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
