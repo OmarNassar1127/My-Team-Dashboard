@@ -23,21 +23,24 @@ export default function CreateTeamModal() {
     setTeamData({ ...teamData, [name]: value });
   };
 
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+    const selectedClub = clubs.find(club => club.name === e.target.value);
+    if (selectedClub) {
+      setTeamData({ ...teamData, club_id: selectedClub.id });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { club_id, name, category } = teamData;
     try {
-      await storeTeam({ club_id, name, category });
+      await storeTeam(teamData);
       setShowModal(false);
       toast.success("Team created successfully!");
     } catch (error) {
       console.error(error);
       toast.error("Error creating team. Please try again.");
     }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
   };
 
   const filteredClubs = clubsLoading ? [] : clubs.filter((club) =>

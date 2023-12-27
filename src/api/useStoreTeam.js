@@ -19,6 +19,7 @@ export const useStoreTeam = () => {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           club_id: teamData.club_id,

@@ -19,6 +19,7 @@ export const useStoreManager = () => {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           name: presidentData.name,

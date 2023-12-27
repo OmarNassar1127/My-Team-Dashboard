@@ -32,13 +32,16 @@ export default function CreateClubModal() {
   };
 
   const handlePresidentChange = (e) => {
-    const { value } = e.target;
-    setClubData({ ...clubData, president_user_id: value });
+    const name = e.target.value;
+    setSearchValue(name);
+
+    const president = presidents.find(p => p.name.toLowerCase() === name.toLowerCase());
+    setClubData(prevState => ({
+      ...prevState,
+      president_user_id: president ? president.id : null
+    }));
   };
 
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-  };
 
   const filteredPresidents = presidentsLoading ? [] : presidents.filter((president) =>
     president.name.toLowerCase().includes(searchValue.toLowerCase())
@@ -46,12 +49,27 @@ export default function CreateClubModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', clubData.name);
+    formData.append('address', clubData.address);
+    formData.append('contact_info', clubData.contact_info);
+    formData.append('email', clubData.email);
+
+    if (clubData.president_user_id) {
+      formData.append('president_user_id', clubData.president_user_id);
+    }
+
+    if (logo) {
+      formData.append('logo', logo);
+    }
+
     try {
-      const response = await storeClub(clubData, logo);
+      await storeClub(formData);
       toast.success("Club created successfully");
       setShowModal(false);
     } catch (error) {
-      toast.error('Failed to create the club', error);
+      toast.error(`Failed to create the club: ${error.message}`);
     }
   };
 
@@ -167,10 +185,11 @@ export default function CreateClubModal() {
                       name="president_search"
                       list="president_datalist"
                       value={searchValue}
-                      onChange={handleSearchChange}
-                      placeholder="Search club..."
+                      onChange={handlePresidentChange}
+                      placeholder="Search president..."
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+
                     <datalist id="president_datalist">
                       {filteredPresidents.map((president) => (
                         <option key={president.id} value={president.name} />
