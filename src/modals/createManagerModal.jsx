@@ -10,7 +10,8 @@ export default function CreateManagerModal() {
   const [showModal, setShowModal] = useState(false);
   const { storeManager, error } = useStoreManager();
   const [managerData, setManagerData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     address: '',
@@ -23,9 +24,9 @@ export default function CreateManagerModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, address, phone_number } = managerData;
+    const { first_name, last_name, email, password, address, phone_number } = managerData;
     try {
-      await storeManager({ name, email, password, address, phone_number });
+      await storeManager({ first_name, last_name, email, password, address, phone_number });
       setShowModal(false);
       toast.success("Manager created successfully!");
     } catch (error) {
@@ -89,19 +90,31 @@ export default function CreateManagerModal() {
                 </div>
                 <form onSubmit={handleSubmit} className="relative p-6 flex-auto">
                   <div className="mb-4">
-                    <label htmlFor="name" className="mr-2 inline-block w-32 text-right">
-                      Name:
+                    <label htmlFor="first_name" className="mr-2 inline-block w-32 text-right">
+                      First Name:
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
+                      id="first_name"
+                      name="first_name"
                       onChange={handleInputChange}
                       className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
+                    <label htmlFor="last_name" className="mr-2 inline-block w-32 text-right">
+                      Last Name:
+                    </label>
+                    <input
+                      type="text"
+                      id="last_name"
+                      name="last_name"
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
                       Email:
                     </label>
                     <input
@@ -113,7 +126,7 @@ export default function CreateManagerModal() {
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="contact_info" className="mr-2 inline-block w-32 text-right">
+                    <label htmlFor="password" className="mr-2 inline-block w-32 text-right">
                       Password:
                     </label>
                     <input
@@ -125,7 +138,7 @@ export default function CreateManagerModal() {
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
+                    <label htmlFor="address" className="mr-2 inline-block w-32 text-right">
                       Address:
                     </label>
                     <input
@@ -137,7 +150,7 @@ export default function CreateManagerModal() {
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="email" className="mr-2 inline-block w-32 text-right">
+                    <label htmlFor="phone_number" className="mr-2 inline-block w-32 text-right">
                       Phone:
                     </label>
                     <input

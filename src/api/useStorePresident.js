@@ -20,7 +20,8 @@ export const useStorePresident = () => {
       };
 
       const body = JSON.stringify({
-        name: presidentData.name,
+        first_name: presidentData.first_name,
+        last_name: presidentData.last_name,
         email: presidentData.email,
         password: presidentData.password,
         address: presidentData.address,
