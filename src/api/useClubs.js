@@ -24,7 +24,7 @@ export function useClubs() {
             }
           })
           .then((responseData) => {
-            setData(responseData.data); // Extracting the data array from the response
+            setData(responseData.data);
             setLoading(false);
           })
           .catch((error) => {
